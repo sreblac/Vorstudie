@@ -32,9 +32,18 @@ class Vorstudie {
 	static boolean lost = false;
 
 	public static void main(String[] args) {
-		System.out.print("Enter file name for Level:");
-		String file = getConsoleInput();
-		level = readLevelFile(file);
+		String run = "";
+		do {
+			run = playGame(run);
+		} while (run != "e");
+		return;
+	}
+	public static String playGame(String file) {
+		if (file == "") {
+			System.out.print("Enter file name for Level:");
+			file = getConsoleInput();
+		}
+		getLevelFromFile(file);
 		printLevel();
 		System.out.println("Enter e to exit, w/a/s/d to move up/left/down/right.");
 
@@ -47,7 +56,7 @@ class Vorstudie {
 			char[] chars = input.toCharArray();
 			for (int i = 0; i < chars.length; i++) {
 				if (chars[i] == 'e') {
-					return;
+					return "e";
 				}
 				if (!movePlayer(chars[i])) {
 					lost = true;
@@ -68,11 +77,33 @@ class Vorstudie {
 		} else {
 			System.out.println("Wut?");
 		}
-		return;
+		// reset
+		playerX = 0;
+		playerY = 0;
+		won = false;
+		lost = false;
+		level = null;
+		
+		// continue playing?
+		System.out.println("(p)lay again");
+		System.out.println("(o)ther level");
+		System.out.println("(e)xit");
+		while (true) {
+			String options = getConsoleInput();
+			switch (options) {
+				case "p":
+					return file;
+				case "o":
+					return "";
+				case "e":
+					return "e";
+			}
+		}
 	}
-	public static char[][] readLevelFile(String fileName) {
+	public static void getLevelFromFile(String fileName) {
 		// http://stackoverflow.com/a/4716623
 		char[][] rows = null;
+		level = null;
 		try(BufferedReader br = new BufferedReader(new FileReader(fileName))) {
 			String line = br.readLine();
 			int i = 0;
@@ -90,11 +121,12 @@ class Vorstudie {
 				i++;
 				line = br.readLine();
 			}
-			return rows;
+			level = rows;
+			return;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return null;
+		return;
 	}
 	public static void printLevel() {
 		if (level == null) {
