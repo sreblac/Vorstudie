@@ -24,9 +24,44 @@ GNU General Public License</a> for more details.</p>
 */
 
 class Vorstudie {
+	static char[][] level = null;
+	static int playerX = 0;
+	static int playerY = 0;
+	static boolean won = false;
+	static boolean lost = false;
+
 	public static void main(String[] args) {
-		char[][] level = readLevelFile("Level99.txt");
-		printLevel(level);
+		level = readLevelFile("Level99.txt");
+		printLevel();
+		//start game
+		while ((!lost) && (!won)) {
+			byte input[] = new byte[256];
+			int numBytes = -1;
+			try {
+				numBytes = System.in.read(input);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			System.out.println(numBytes);
+			String s = null;
+			char[] chars = null;
+			if (numBytes > 0){
+				s = new String(input, 0, numBytes-2); //numBytes-2 is a horrible hack fix. I have no idea about error source.
+				chars = s.toCharArray();
+			}
+			for (int i = 0; i < chars.length; i++) {
+				if (!movePlayer(chars[i])) {
+					System.out.println("Autsch!");
+					lost = true;
+					break;
+				}
+				if (won) {
+					System.out.println("Gewonnen!");
+					return;
+				}
+			}
+			printLevel();
+		}
 	}
 	public static char[][] readLevelFile(String fileName) {
 		// http://stackoverflow.com/a/4716623
@@ -54,7 +89,7 @@ class Vorstudie {
 		}
 		return null;
 	}
-	public static void printLevel(char[][] level) {
+	public static void printLevel() {
 		if (level == null) {
 			return;
 		}
@@ -65,6 +100,65 @@ class Vorstudie {
 				System.out.print(level[i][j]);
 			}
 			System.out.print("\n");
+		}
+	}
+	public static void getPlayerPosition() {
+		if (level == null) {
+			return;
+		}
+		int rows = level.length;
+		for (int i = 0; i < rows; i++) {
+			int cols = level[i].length;
+			for (int j = 0; j < cols; j++) {
+				if(level[i][j] == '@') {
+					playerX = j;
+					playerY = i;
+				}
+			}
+		}
+		System.out.println(playerX+":"+playerY);
+	}
+	public static boolean movePlayer(char direction) {
+		if ((direction != 'w') && (direction != 's') && (direction != 'a') && (direction != 'd')) {
+			return true;
+		}
+		getPlayerPosition();
+		int newX = playerX;
+		int newY = playerY;
+		switch (direction) {
+			case 'w':
+				newY -= 1;
+				break;
+			case 's':
+				newY += 1;
+				break;
+			case 'a':
+				newX -= 1;
+				break;
+			case 'd':
+				newX += 1;
+				break;
+		}
+		switch (level[newY][newX]) {
+			case '#':
+				return false;
+			case ' ':
+				level[playerY][playerX] = ' ';
+				level[newY][newX] = '@';
+				playerX = newX;
+				playerY = newY;
+				return true;
+			case '$':
+				return false;
+			case '.':
+				won = true;
+				level[playerY][playerX] = ' ';
+				level[newY][newX] = '@';
+				playerX = newX;
+				playerY = newY;
+				return true;
+			default:
+				return false;
 		}
 	}
 }
