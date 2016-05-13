@@ -2,6 +2,27 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+/** Project for OPJ.
+<p>Copyright (c) 2016 Conrad Albers, University of Bielefeld 2016</p>
+
+<p>This class is free software; you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the
+Free Software Foundation; either version 2, or (at your option) any
+later version.</p>
+
+<p>This class is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+or FITNESS FOR A PARTICULAR PURPOSE.  See the <a href="http://www.gnu.org/copyleft/gpl.html">
+GNU General Public License</a> for more details.</p>
+<hr>
+
+<p>This class is a project work for: 
+392026 Objektorientierte Programmierung in Java (V) (SoSe 2016)
+</p>
+
+<p>The functions readLevelFile and printLevel represent stage 1/4.</p>
+*/
+
 class Vorstudie {
 	public static void main(String[] args) {
 		char[][] level = readLevelFile("Level99.txt");
@@ -11,7 +32,6 @@ class Vorstudie {
 		// http://stackoverflow.com/a/4716623
 		char[][] rows = null;
 		try(BufferedReader br = new BufferedReader(new FileReader(fileName))) {
-			//StringBuilder sb = new StringBuilder();
 			String line = br.readLine();
 			int i = 0;
 			int longest = 0;
@@ -26,12 +46,8 @@ class Vorstudie {
 				temp[i] = newLine;
 				rows = temp;
 				i++;
-				//sb.append(line);
-				//sb.append(System.lineSeparator());
 				line = br.readLine();
 			}
-			//String everything = sb.toString();
-			//System.out.print(everything);
 			return rows;
 		} catch (IOException e) {
 			e.printStackTrace();
