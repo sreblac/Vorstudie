@@ -1,9 +1,10 @@
 import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.io.FileReader;
 import java.io.IOException;
 
 /** Project for OPJ.
-<p>Copyright (c) 2016 Conrad Albers, University of Bielefeld 2016</p>
+<p>Copyright (c) 2016 Conrad Albers, University of Bielefeld</p>
 
 <p>This class is free software; you can redistribute it and/or modify it
 under the terms of the GNU General Public License as published by the
@@ -29,15 +30,13 @@ class Vorstudie {
 	static int playerY = 0;
 	static boolean won = false;
 	static boolean lost = false;
-	static int a = '.';
-	static int b = '$';
-	static int c = a+b;
-	static char d = (char) c;
 
 	public static void main(String[] args) {
-		System.out.println(d);
-		level = readLevelFile("LevelX.txt");
+		System.out.print("Enter file name for Level:");
+		String file = getConsoleInput();
+		level = readLevelFile(file);
 		printLevel();
+
 		//start game
 		while ((!lost) && (!won)) {
 			byte input[] = new byte[256];
@@ -67,6 +66,7 @@ class Vorstudie {
 			}
 			printLevel();
 		}
+
 		// react to result
 		if(lost){
 			System.out.println("Autsch!");
@@ -226,5 +226,16 @@ class Vorstudie {
 			default:
 				return false;
 		}
+	}
+	public static String getConsoleInput() {
+		try {
+			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+			String input;
+			input = br.readLine();
+			return input;
+		} catch (IOException io) {
+			io.printStackTrace();
+		}
+		return "";
 	}
 }
