@@ -36,22 +36,15 @@ class Vorstudie {
 		String file = getConsoleInput();
 		level = readLevelFile(file);
 		printLevel();
+		System.out.println("Enter e to exit, w/a/s/d to move up/left/down/right.");
 
 		//start game
 		while ((!lost) && (!won)) {
-			byte input[] = new byte[256];
-			int numBytes = -1;
-			try {
-				numBytes = System.in.read(input);
-			} catch (IOException e) {
-				e.printStackTrace();
+			String input = getConsoleInput();
+			if (input == "") {
+				continue;
 			}
-			String s = null;
-			char[] chars = null;
-			if (numBytes > 0){
-				s = new String(input, 0, numBytes-2); // numBytes-2 is a horrible hack fix. I have no idea about error source.
-				chars = s.toCharArray();
-			}
+			char[] chars = input.toCharArray();
 			for (int i = 0; i < chars.length; i++) {
 				if (chars[i] == 'e') {
 					return;
@@ -228,6 +221,7 @@ class Vorstudie {
 		}
 	}
 	public static String getConsoleInput() {
+		// http://www.mkyong.com/java/how-to-get-the-standard-input-in-java/
 		try {
 			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 			String input;
