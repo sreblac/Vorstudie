@@ -29,9 +29,14 @@ class Vorstudie {
 	static int playerY = 0;
 	static boolean won = false;
 	static boolean lost = false;
+	static int a = '.';
+	static int b = '$';
+	static int c = a+b;
+	static char d = (char) c;
 
 	public static void main(String[] args) {
-		level = readLevelFile("Level99.txt");
+		System.out.println(d);
+		level = readLevelFile("LevelX.txt");
 		printLevel();
 		//start game
 		while ((!lost) && (!won)) {
@@ -42,26 +47,35 @@ class Vorstudie {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			System.out.println(numBytes);
 			String s = null;
 			char[] chars = null;
 			if (numBytes > 0){
-				s = new String(input, 0, numBytes-2); //numBytes-2 is a horrible hack fix. I have no idea about error source.
+				s = new String(input, 0, numBytes-2); // numBytes-2 is a horrible hack fix. I have no idea about error source.
 				chars = s.toCharArray();
 			}
 			for (int i = 0; i < chars.length; i++) {
+				if (chars[i] == 'e') {
+					return;
+				}
 				if (!movePlayer(chars[i])) {
-					System.out.println("Autsch!");
 					lost = true;
 					break;
 				}
 				if (won) {
-					System.out.println("Gewonnen!");
-					return;
+					break;
 				}
 			}
 			printLevel();
 		}
+		// react to result
+		if(lost){
+			System.out.println("Autsch!");
+		} else if (won){
+			System.out.println("Gewonnen!");
+		} else {
+			System.out.println("Wut?");
+		}
+		return;
 	}
 	public static char[][] readLevelFile(String fileName) {
 		// http://stackoverflow.com/a/4716623
@@ -116,7 +130,6 @@ class Vorstudie {
 				}
 			}
 		}
-		System.out.println(playerX+":"+playerY);
 	}
 	public static boolean movePlayer(char direction) {
 		if ((direction != 'w') && (direction != 's') && (direction != 'a') && (direction != 'd')) {
@@ -149,13 +162,66 @@ class Vorstudie {
 				playerY = newY;
 				return true;
 			case '$':
-				return false;
+				if (moveCrate(direction, newX, newY)){
+					level[playerY][playerX] = ' ';
+					playerX = newX;
+					playerY = newY;
+					return true;
+				} else {
+					return false;
+				}
+			case '*':
+				if (moveCrate(direction, newX, newY)){
+					won = true;
+					level[playerY][playerX] = ' ';
+					playerX = newX;
+					playerY = newY;
+					return true;
+				} else {
+					return false;
+				}
 			case '.':
 				won = true;
 				level[playerY][playerX] = ' ';
 				level[newY][newX] = '@';
 				playerX = newX;
 				playerY = newY;
+				return true;
+			default:
+				return false;
+		}
+	}
+	public static boolean moveCrate(char direction, int crateX, int crateY) {
+		int newX = crateX;
+		int newY = crateY;
+		switch (direction) {
+			case 'w':
+				newY -= 1;
+				break;
+			case 's':
+				newY += 1;
+				break;
+			case 'a':
+				newX -= 1;
+				break;
+			case 'd':
+				newX += 1;
+				break;
+		}
+		switch (level[newY][newX]) {
+			case '#':
+				return false;
+			case ' ':
+				level[crateY][crateX] = '@';
+				level[newY][newX] = '$';
+				return true;
+			case '$':
+				return false;
+			case '*':
+				return false;
+			case '.':
+				level[crateY][crateX] = '@';
+				level[newY][newX] = '*';
 				return true;
 			default:
 				return false;
