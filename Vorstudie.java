@@ -21,7 +21,13 @@ GNU General Public License</a> for more details.</p>
 392026 Objektorientierte Programmierung in Java (V) (SoSe 2016)
 </p>
 
-<p>The functions readLevelFile and printLevel represent stage 1/4.</p>
+<p>The functions readLevelFile and printLevel represent assignment 1.</p>
+
+<p>The function movePlayer represent assignment 2.</p>
+
+<p>The function moveCrate represent assignment 3.</p>
+
+<p>Assignment 4 is part of the last two.</p>
 */
 
 class Vorstudie {
@@ -101,9 +107,9 @@ class Vorstudie {
 		}
 	}
 	public static void getLevelFromFile(String fileName) {
-		// http://stackoverflow.com/a/4716623
 		char[][] rows = null;
 		level = null;
+		// based on http://stackoverflow.com/a/4716623
 		try(BufferedReader br = new BufferedReader(new FileReader(fileName))) {
 			String line = br.readLine();
 			int i = 0;
@@ -253,9 +259,8 @@ class Vorstudie {
 		}
 	}
 	public static String getConsoleInput() {
-		// http://www.mkyong.com/java/how-to-get-the-standard-input-in-java/
-		try {
-			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		// based on http://www.mkyong.com/java/how-to-get-the-standard-input-in-java/
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
 			String input;
 			input = br.readLine();
 			return input;
