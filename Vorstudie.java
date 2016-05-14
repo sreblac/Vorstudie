@@ -116,7 +116,9 @@ class Vorstudie {
 			int longest = 0;
 
 			while (line != null) {
-				longest = line.length();
+				if (line.length() > longest) {
+					longest = line.length();
+				}
 				char[][] temp = new char[i+1][longest];
 				for (int j = 0; j < i; j++) {
 					temp[j] = rows[j];
@@ -260,7 +262,8 @@ class Vorstudie {
 	}
 	public static String getConsoleInput() {
 		// based on http://www.mkyong.com/java/how-to-get-the-standard-input-in-java/
-		try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
+		try {
+			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 			String input;
 			input = br.readLine();
 			return input;
