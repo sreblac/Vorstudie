@@ -2,6 +2,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 /** Project for OPJ.
 <p>Copyright (c) 2016 Conrad Albers, University of Bielefeld</p>
@@ -36,6 +38,7 @@ class Vorstudie {
 	static int playerY = 0;
 	static boolean won = false;
 	static boolean lost = false;
+	static Pattern p = Pattern.compile("Level[a-zA-Z 0-9]*.txt");
 
 	public static void main(String[] args) {
 		String run = "";
@@ -109,6 +112,11 @@ class Vorstudie {
 		}
 	}
 	public static boolean getLevelFromFile(String fileName) {
+		Matcher m = p.matcher(fileName);
+		if (!m.matches()) {
+			System.out.println("File name doesn't match pattern!");
+			return false;
+		}
 		char[][] rows = null;
 		level = null;
 		// based on http://stackoverflow.com/a/4716623
