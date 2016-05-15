@@ -47,6 +47,13 @@ class Vorstudie {
 		} while (run != "e");
 		return;
 	}
+/**
+<p>This function tries to open the file name given to it and
+plays one round of the game if successful. Then it offers
+the option to play again or exit.</p>
+
+<p>This function is part of the solution to assignment 4.</p>
+*/
 	public static String playGame(String file) {
 		if (file == "") {
 			System.out.print("Enter file name for Level:");
@@ -111,6 +118,13 @@ class Vorstudie {
 			}
 		}
 	}
+/**
+<p>Tries to open a level file. Throws an exception if file name
+matches pattern but there is no file with this name. Sets the
+level member variable.</p>
+
+<p>This function is part 1/2 of assignment 1.</p>
+*/
 	public static boolean getLevelFromFile(String fileName) {
 		Matcher m = p.matcher(fileName);
 		if (!m.matches()) {
@@ -146,6 +160,11 @@ class Vorstudie {
 			return false;
 		}
 	}
+/**
+<p>Prints level member variable to the standard output.</p>
+
+<p>This function is part 2/2 of assignment 1.</p>
+*/
 	public static void printLevel() {
 		if (level == null) {
 			return;
@@ -159,6 +178,10 @@ class Vorstudie {
 			System.out.print("\n");
 		}
 	}
+/**
+<p>Tries to find the player symbol in the level member variable.
+Doesn't change if no symbol is found.</p>
+*/
 	public static void getPlayerPosition() {
 		if (level == null) {
 			return;
@@ -174,6 +197,15 @@ class Vorstudie {
 			}
 		}
 	}
+/**
+<p>Moves the player symbol in the level member variable.</p>
+
+<p>This function is the solution to assignment 2.</p>
+
+<p>This function is the solution to assignment 4. It sets won
+member variable to true, which is checked in the playGame
+member function.</p>
+*/
 	public static boolean movePlayer(char direction) {
 		if ((direction != 'w') && (direction != 's') && (direction != 'a') && (direction != 'd')) {
 			return true;
@@ -234,6 +266,13 @@ class Vorstudie {
 				return false;
 		}
 	}
+/**
+<p>This function is called by movePlayer member function, and
+should only be called from there, because direction is checked
+there.</p>
+
+<p>This function is the solution to assignment 3.</p>
+*/
 	public static boolean moveCrate(char direction, int crateX, int crateY) {
 		int newX = crateX;
 		int newY = crateY;
@@ -270,6 +309,9 @@ class Vorstudie {
 				return false;
 		}
 	}
+/**
+<p>Gets console input as string for the movement commands.</p>
+*/
 	public static String getConsoleInput() {
 		// based on http://www.mkyong.com/java/how-to-get-the-standard-input-in-java/
 		try {
