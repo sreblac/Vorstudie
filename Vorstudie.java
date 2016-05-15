@@ -49,7 +49,9 @@ class Vorstudie {
 			System.out.print("Enter file name for Level:");
 			file = getConsoleInput();
 		}
-		getLevelFromFile(file);
+		if (!getLevelFromFile(file)) {
+			return "";
+		}
 		printLevel();
 		System.out.println("Enter e to exit, w/a/s/d to move up/left/down/right.");
 
@@ -91,7 +93,7 @@ class Vorstudie {
 		level = null;
 		
 		// continue playing?
-		System.out.println("(p)lay again");
+		System.out.println("(p)lay level again");
 		System.out.println("(o)ther level");
 		System.out.println("(e)xit");
 		while (true) {
@@ -106,7 +108,7 @@ class Vorstudie {
 			}
 		}
 	}
-	public static void getLevelFromFile(String fileName) {
+	public static boolean getLevelFromFile(String fileName) {
 		char[][] rows = null;
 		level = null;
 		// based on http://stackoverflow.com/a/4716623
@@ -130,11 +132,11 @@ class Vorstudie {
 				line = br.readLine();
 			}
 			level = rows;
-			return;
+			return true;
 		} catch (IOException e) {
 			e.printStackTrace();
+			return false;
 		}
-		return;
 	}
 	public static void printLevel() {
 		if (level == null) {
